@@ -36,7 +36,7 @@ export function CyclesContextProvider({ children, }: CyclesContextProviderProps)
     const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
     const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
-    const activeCycle = cycles.find((cycle) => cycle.id == activeCycleId)
+    const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
     function setSecondsPassed(seconds: number) {
         setAmountSecondsPassed(seconds)
@@ -44,15 +44,15 @@ export function CyclesContextProvider({ children, }: CyclesContextProviderProps)
 
     function markCurrentCyclesAsFinished() {
         setCycles((state) =>
-            state.map((cycle) => {
-                if (cycle.id == activeCycleId) {
-                    return { ...cycle, finishedDate: new Date() }
-                } else {
-                    return cycle
-                }
-            }),
-        )
+            state.map((cycle) =>
+                cycle.id === activeCycleId
+                    ? { ...cycle, finishedDate: new Date() }
+                    : cycle
+            )
+        );
+        setActiveCycleId(null);
     }
+    
 
     function createNewCycle(data: CreateCycleData) {
         const id = String(new Date().getTime());
